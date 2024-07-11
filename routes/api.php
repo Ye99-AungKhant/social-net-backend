@@ -23,4 +23,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('post', [PostController::class, 'create']);
     Route::get('app', [AppController::class, 'index']);
+    Route::post('post/like', [PostController::class, 'like']);
 });

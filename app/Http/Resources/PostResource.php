@@ -16,10 +16,16 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'image' => null,
             'content' => $this->content,
-            'user_id' => $this->user_id,
             'status' => $this->status,
-            'created_at' => $this->created_at
+            'date' => $this->created_at->diffForHumans([
+                'parts' => 1,
+                'join' => ', ',
+                'short' => true,
+            ]),
+            'like_count' => $this->like_count,
+            'user' => new UserResource($this->user)
         ];
     }
 }

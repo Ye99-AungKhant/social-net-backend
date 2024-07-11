@@ -11,10 +11,11 @@ class AppController extends Controller
 {
     public function index()
     {
-        $posts = Post::get();
+        $posts = Post::with('user', 'like')->withCount('like')->get();
+
         return response()->json([
             'success' => true,
-            'data' => $posts
+            'data' => PostResource::collection($posts),
         ], 200);
     }
 }
