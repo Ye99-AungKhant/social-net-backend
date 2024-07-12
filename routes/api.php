@@ -27,4 +27,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('post/like', [PostController::class, 'like']);
 
     Route::post('comment', [CommentController::class, 'create']);
+    Route::get('comment', [CommentController::class, 'index']);
 });

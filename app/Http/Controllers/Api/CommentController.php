@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    public function index(Request $request)
+    {
+        $comments = Comment::with('user')->get();
+        return response()->json([
+            'success' => true,
+            'data' => $comments
+        ], 200);
+    }
+
     public function create(Request $request)
     {
         $comment = new Comment();
@@ -17,7 +26,7 @@ class CommentController extends Controller
         $comment->save();
         return response()->json([
             'success' => true,
-            'data' => $comment
+            'data' => [$comment]
         ], 200);
     }
 }
