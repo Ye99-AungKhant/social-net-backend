@@ -28,13 +28,22 @@ class PostController extends Controller
     public function like(Request $request)
     {
         $authUserId = auth()->user()->id;
-        $liked = new Like();
-        $liked->post_id = $request->postId;
-        $liked->user_id = $authUserId;
-        $liked->save();
+        $postId = $request->postId;
+        $like = new Like();
+        $liked = $like->where('post_id', $postId)->where('user_id', $authUserId)->first();
+        if (!$liked) {
+            $like->post_id = $postId;
+            $like->user_id = $authUserId;
+            $like->save();
+            return response()->json([
+                'liked' => true,
+                'data' => $like
+            ], 200);
+        }
+        $liked->delete();
         return response()->json([
-            'success' => true,
-            'data' => $liked
+            'unliked' => true,
+            'data' => ['auth_id' => $authUserId, 'post_id' => $postId]
         ], 200);
     }
 }
