@@ -22,10 +22,13 @@ Route::post('signup', [UserController::class, 'signup']);
 Route::post('signin', [UserController::class, 'signin']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [UserController::class, 'logout']);
-    Route::post('post', [PostController::class, 'create']);
+
     Route::get('app', [AppController::class, 'index']);
+    Route::post('post', [PostController::class, 'create']);
     Route::post('post/like', [PostController::class, 'like']);
 
-    Route::post('comment', [CommentController::class, 'create']);
-    Route::get('comment', [CommentController::class, 'index']);
+    Route::post('comment', [CommentController::class, 'index']);
+    Route::post('comment/create', [CommentController::class, 'create']);
+    Route::delete('comment/delete/{id}', [CommentController::class, 'delete']);
+    Route::patch('comment/edit', [CommentController::class, 'edit']);
 });
