@@ -20,4 +20,9 @@ class Post extends Model
     {
         return $this->hasMany(Like::class, 'post_id', 'id');
     }
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
 }

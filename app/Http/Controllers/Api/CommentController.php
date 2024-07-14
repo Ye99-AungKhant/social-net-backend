@@ -33,9 +33,11 @@ class CommentController extends Controller
 
     public function delete($id)
     {
-        Comment::where('id', $id)->delete();
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
         return response()->json([
             'success' => true,
+            'data' => $comment->post_id
         ], 200);
     }
 
