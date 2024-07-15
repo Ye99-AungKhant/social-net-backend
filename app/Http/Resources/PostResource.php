@@ -16,7 +16,6 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image' => null,
             'content' => $this->content,
             'status' => $this->status,
             'date' => $this->created_at->diffForHumans([
@@ -27,6 +26,7 @@ class PostResource extends JsonResource
             'like_count' => $this->like_count,
             'comment_count' => $this->comment_count,
             'liked' => $this->like,
+            'image' => MediaResource::collection($this->media),
             'user' => new UserResource($this->user)
         ];
     }

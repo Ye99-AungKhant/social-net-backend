@@ -13,7 +13,7 @@ class AppController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user', 'like')->withCount('like', 'comment')->get();
+        $posts = Post::with('user', 'like', 'media')->withCount('like', 'comment')->get();
         $auth = User::select('id', 'name')->where('id', Auth::id())->first();
 
         return response()->json([

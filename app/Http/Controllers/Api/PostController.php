@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Like;
+use App\Models\Media;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,27 @@ class PostController extends Controller
 {
     public function create(Request $request)
     {
+        if ($request->image !== null) {
+            $post = new Post();
+            $post->user_id = Auth::user()->id;
+            $post->content = $request->content;
+            $post->status = $request->status;
+            $post->save();
+
+            $media = new Media();
+
+            foreach ($request->image as $value) {
+                $media->post_id = $post->id;
+                $media->url = $value;
+                $media->type = 'Post';
+                $media->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [new PostResource($post)]
+            ], 200);
+        }
         $post = new Post();
         $post->user_id = Auth::user()->id;
         $post->content = $request->content;

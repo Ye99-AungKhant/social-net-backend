@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('content')->nullable();
+            $table->longText('content')->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->enum('status', ['Public', 'Friend', 'Onlyme', 'Archived']);
             $table->foreign('user_id')->references('id')->on('users');
