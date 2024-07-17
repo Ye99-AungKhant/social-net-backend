@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        $posts = Post::with('user', 'like', 'media')->with('user.media')->withCount('like', 'comment')->orderBy('updated_at', 'DESC')->simplePaginate(5);
+        return PostResource::collection($posts)->additional(['success' => true]);
+        // return [$posts];
+    }
+
     public function create(Request $request)
     {
         if ($request->image !== null) {
@@ -21,9 +28,8 @@ class PostController extends Controller
             $post->status = $request->status;
             $post->save();
 
-            $media = new Media();
-
             foreach ($request->image as $value) {
+                $media = new Media();
                 $media->post_id = $post->id;
                 $media->url = $value;
                 $media->type = 'Post';
@@ -34,17 +40,18 @@ class PostController extends Controller
                 'success' => true,
                 'data' => [new PostResource($post)]
             ], 200);
-        }
-        $post = new Post();
-        $post->user_id = Auth::user()->id;
-        $post->content = $request->content;
-        $post->status = $request->status;
-        $post->save();
+        } else {
+            $post = new Post();
+            $post->user_id = Auth::user()->id;
+            $post->content = $request->content;
+            $post->status = $request->status;
+            $post->save();
 
-        return response()->json([
-            'success' => true,
-            'data' => [new PostResource($post)]
-        ], 200);
+            return response()->json([
+                'success' => true,
+                'data' => [new PostResource($post)]
+            ], 200);
+        }
     }
 
     public function like(Request $request)

@@ -13,13 +13,7 @@ class AppController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user', 'like', 'media')->withCount('like', 'comment')->get();
-        $auth = User::select('id', 'name')->where('id', Auth::id())->first();
-
-        return response()->json([
-            'success' => true,
-            'data' => PostResource::collection($posts),
-            'auth' => $auth
-        ], 200);
+        $auth = User::select('id', 'name')->with(['media:user_id,url'])->where('id', Auth::id())->first();
+        return response()->json(['success' => true, 'auth' => $auth]);
     }
 }

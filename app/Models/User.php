@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use PhpParser\Node\Expr\FuncCall;
 
 class User extends Authenticatable
 {
@@ -49,5 +49,10 @@ class User extends Authenticatable
     public function post(): HasMany
     {
         return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    public function media()
+    {
+        return $this->hasOne(Media::class, 'user_id', 'id');
     }
 }
