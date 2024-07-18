@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('content');
             $table->unsignedBigInteger('user_id');
             $table->enum('status', ['Public', 'Friend']);
+            $table->string('url');
             $table->timestamps();
         });
     }

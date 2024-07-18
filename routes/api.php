@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [UserController::class, 'logout']);
 
     Route::get('app', [AppController::class, 'index']);
+
+    Route::get('story', [StoryController::class, 'index']);
+    Route::post('story', [StoryController::class, 'create']);
+
     Route::get('post', [PostController::class, 'index']);
     Route::post('post', [PostController::class, 'create']);
     Route::post('post/like', [PostController::class, 'like']);

@@ -13,7 +13,7 @@ class AppController extends Controller
 {
     public function index()
     {
-        $auth = User::select('id', 'name')->with(['media:user_id,url'])->where('id', Auth::id())->first();
+        $auth = User::select('id', 'name', 'profile')->where('id', Auth::id())->first();
         return response()->json(['success' => true, 'auth' => $auth]);
     }
 }

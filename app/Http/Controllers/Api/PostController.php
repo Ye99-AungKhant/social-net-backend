@@ -14,7 +14,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user', 'like', 'media')->with('user.media')->withCount('like', 'comment')->orderBy('updated_at', 'DESC')->simplePaginate(5);
+        $posts = Post::with('user', 'like', 'media')->withCount('like', 'comment')->orderBy('updated_at', 'DESC')->simplePaginate(10);
         return PostResource::collection($posts)->additional(['success' => true]);
         // return [$posts];
     }
