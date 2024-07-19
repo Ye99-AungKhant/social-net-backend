@@ -12,7 +12,8 @@ class StoryController extends Controller
 {
     public function index()
     {
-        $story = Story::with('user')->orderBy('updated_at', 'DESC')->simplePaginate(8);
+        $user = auth()->user();
+        $story = $user->friendsStory()->orderBy('updated_at', 'DESC')->simplePaginate(8);
         return StoryResource::collection($story)->additional(['success' => true], 200);
     }
 

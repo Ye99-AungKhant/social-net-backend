@@ -25,7 +25,7 @@ class PostResource extends JsonResource
             ]),
             'like_count' => $this->like_count,
             'comment_count' => $this->comment_count,
-            'liked' => $this->like,
+            'liked' => LikeResource::collection($this->like),
             'image' => MediaResource::collection($this->media),
             'user' => new UserResource($this->user),
 

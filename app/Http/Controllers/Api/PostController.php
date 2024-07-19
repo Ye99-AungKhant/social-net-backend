@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use App\Models\Friendship;
 use App\Models\Like;
 use App\Models\Media;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +18,13 @@ class PostController extends Controller
     {
         $posts = Post::with('user', 'like', 'media')->withCount('like', 'comment')->orderBy('updated_at', 'DESC')->simplePaginate(10);
         return PostResource::collection($posts)->additional(['success' => true]);
-        // return [$posts];
+    }
+
+    public function friendPost()
+    {
+        $user = auth()->user();
+        $friendPosts = $user->friendsPosts()->with('like', 'media')->withCount('like', 'comment')->orderBy('updated_at', 'DESC')->simplePaginate(10);
+        return PostResource::collection($friendPosts)->additional(['success' => true]);
     }
 
     public function create(Request $request)
