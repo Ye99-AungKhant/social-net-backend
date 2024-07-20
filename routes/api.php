@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -38,4 +39,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('comment/create', [CommentController::class, 'create']);
     Route::delete('comment/delete/{id}', [CommentController::class, 'delete']);
     Route::patch('comment/edit', [CommentController::class, 'edit']);
+
+    Route::get('profile/post/{id}', [ProfileController::class, 'getPost']);
+    Route::get('profile/data/{id}', [ProfileController::class, 'profileData']);
 });
