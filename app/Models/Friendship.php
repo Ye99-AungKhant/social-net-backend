@@ -9,6 +9,8 @@ class Friendship extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['adding_user_id', 'added_user_id', 'status'];
+
     // User who added this friend
     public function addingUser()
     {

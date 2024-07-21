@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('adding_user_id');
             $table->unsignedBigInteger('added_user_id');
-            $table->enum('status', ['Requested, Accepted, Declined']);
+            $table->enum('status', ['Requested', 'Accepted', 'Declined']);
             $table->timestamps();
         });
     }

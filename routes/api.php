@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StoryController;
@@ -42,4 +43,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('profile/post/{id}', [ProfileController::class, 'getPost']);
     Route::get('profile/data/{id}', [ProfileController::class, 'profileData']);
+    Route::get('friend/requested', [FriendController::class, 'index']);
+    Route::get('friend/request/{id}', [FriendController::class, 'friendRequest']);
+    Route::patch('friend/accept', [FriendController::class, 'friendRequestAccept']);
+    Route::patch('friend/decline', [FriendController::class, 'friendRequestDecline']);
+    Route::get('unfriend/{id}', [FriendController::class, 'unfriend']);
 });
