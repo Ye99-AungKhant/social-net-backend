@@ -17,9 +17,22 @@ class FriendController extends Controller
         $requestedFriendLists = User::with(['friendsAdded' => function ($query) {
             $query->where('status', 'Requested');
         }, 'friendsAdded.addedUser'])->where('id', $authId)->first();
+
         return response()->json([
             'success' => true,
-            'data' => FriendResource::collection($requestedFriendLists->friendsAdded)
+            'data' => FriendResource::collection($requestedFriendLists->friendsAdded),
+        ], 200);
+    }
+
+    public function waitingFriend()
+    {
+        $authId = auth()->user()->id;
+        $waitingFriendLists = User::with(['friendsOf' => function ($query) {
+            $query->where('status', 'Requested');
+        }, 'friendsOf.addingUser'])->where('id', $authId)->first();
+        return response()->json([
+            'success' => true,
+            'waitingfriendList' => FriendResource::collection($waitingFriendLists->friendsOf)
         ], 200);
     }
 
@@ -31,7 +44,9 @@ class FriendController extends Controller
             'added_user_id' => $authId,
             'status' => 'Requested'
         ]);
-        return $addFriend;
+        return response()->json([
+            'data' => [new FriendResource($addFriend)]
+        ]);
     }
 
     public function friendRequestAccept(Request $request)

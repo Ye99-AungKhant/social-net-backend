@@ -16,7 +16,7 @@ class FriendResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'adding_user' => $this->adding_user_id,
+            'adding_user' => new UserResource($this->whenLoaded('addingUser')),
             'status' => $this->status,
             'date' => $this->created_at->diffForHumans([
                 'parts' => 1,

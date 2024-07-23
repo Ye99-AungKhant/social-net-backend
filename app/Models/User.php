@@ -101,14 +101,14 @@ class User extends Authenticatable
         $friendsAdded = User::whereIn('id', function ($query) use ($userId, $status) {
             $query->select('added_user_id')
                 ->from('friendships')
-                ->where('adding_user_id', $userId)->where('status', '!=', $status);
+                ->where('adding_user_id', $userId)->where('status', $status);
         })->get();
 
         // Users who have added this user as a friend
         $friendsOf = User::whereIn('id', function ($query) use ($userId, $status) {
             $query->select('adding_user_id')
                 ->from('friendships')
-                ->where('added_user_id', $userId)->where('status', '!=', $status);
+                ->where('added_user_id', $userId)->where('status', $status);
         })->get();
 
         // Combine the two collections and remove duplicates

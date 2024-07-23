@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('profile/post/{id}', [ProfileController::class, 'getPost']);
     Route::get('profile/data/{id}', [ProfileController::class, 'profileData']);
     Route::get('friend/requested', [FriendController::class, 'index']);
+    Route::get('friend/waiting', [FriendController::class, 'waitingFriend']);
     Route::get('friend/request/{id}', [FriendController::class, 'friendRequest']);
     Route::patch('friend/accept', [FriendController::class, 'friendRequestAccept']);
     Route::patch('friend/decline', [FriendController::class, 'friendRequestDecline']);

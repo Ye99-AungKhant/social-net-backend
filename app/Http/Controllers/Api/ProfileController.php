@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FriendResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
 use App\Models\Friendship;
@@ -23,10 +24,15 @@ class ProfileController extends Controller
     public function profileData($id)
     {
         $user = User::find($id);
-        $friendLists = $user->getFriendsList($id, 'Declined');
+        $authId = auth()->user()->id;
+        $friendLists = $user->getFriendsList($id, 'Accepted');
+
+        $waitingFriendLists = User::with('friendsOf.addingUser')->where('id', $authId)->first();
+
         return response()->json([
             'profileData' => new UserResource($user),
-            'friendList' => UserResource::collection($friendLists)
+            'friendList' => $friendLists,
+            'waitingfriendList' => FriendResource::collection($waitingFriendLists->friendsOf)
         ], 200);
     }
 }
