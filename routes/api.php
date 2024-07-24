@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AppController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\PostController;
@@ -49,4 +50,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('friend/accept', [FriendController::class, 'friendRequestAccept']);
     Route::patch('friend/decline', [FriendController::class, 'friendRequestDecline']);
     Route::get('unfriend/{id}', [FriendController::class, 'unfriend']);
+
+    Route::get('chat/{id}', [ChatController::class, 'index']);
+    Route::post('chat', [ChatController::class, 'store']);
 });

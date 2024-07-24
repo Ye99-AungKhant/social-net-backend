@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\UserResource;
 use App\Models\Friendship;
 use App\Models\Post;
 use App\Models\User;
@@ -16,8 +17,15 @@ class AppController extends Controller
     {
         $auth = User::select('id', 'name', 'profile')->where('id', Auth::id())->first();
 
-        $friendRequestNoti = Friendship::where('adding_user_id', $auth->id)->count();
+        $friendRequestNoti = Friendship::where('adding_user_id', $auth->id)->where('status', 'Requested')->count();
 
-        return response()->json(['success' => true, 'auth' => $auth, 'friendRequestNoti' => $friendRequestNoti]);
+        $friendLists = $auth->getFriendsList($auth->id, 'Accepted');
+
+        return response()->json([
+            'success' => true,
+            'auth' => $auth,
+            'friendRequestNoti' => $friendRequestNoti,
+            'friendList' => UserResource::collection($friendLists),
+        ]);
     }
 }
