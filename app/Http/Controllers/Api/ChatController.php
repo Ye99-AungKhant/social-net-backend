@@ -56,4 +56,11 @@ class ChatController extends Controller
             ], 200);
         }
     }
+
+    public function markAsRead(Request $request)
+    {
+        $authId = auth()->user()->id;
+        $chat = Chat::where('sender_id', $request->senderId)->where('receiver_id', $authId)->update(['read' => true]);
+        return response()->json(['status' => 'success', 'data' => $chat]);
+    }
 }
