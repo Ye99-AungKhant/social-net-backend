@@ -24,6 +24,7 @@ class ChatResource extends JsonResource
                 'join' => ', ',
                 'short' => true,
             ]),
+            'media' => ChatMediaResource::collection($this->media),
         ];
     }
 }

@@ -16,11 +16,16 @@ class Chat extends Model
 
     public function sender()
     {
-        $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
     public function receiver()
     {
-        $this->belongsTo(User::class, 'receiver_id');
+        return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    public function media()
+    {
+        return $this->hasMany(ChatMedia::class, 'chat_id', 'id');
     }
 }
