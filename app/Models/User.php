@@ -116,4 +116,19 @@ class User extends Authenticatable
 
         return $friendsList;
     }
+
+    // public function postsWithNotifications()
+    // {
+    //     return $this->hasMany(Post::class, 'user_id')
+    //         ->whereHas('notifications')->with('notifications');
+    // }
+
+    public function notificationsFromPosts()
+    {
+        return Notification::whereIn('post_id', function ($query) {
+            $query->select('id')
+                ->from('posts')
+                ->where('user_id', $this->id);
+        })->get();
+    }
 }

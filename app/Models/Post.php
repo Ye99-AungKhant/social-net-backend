@@ -30,4 +30,9 @@ class Post extends Model
     {
         return $this->hasMany(Media::class, 'post_id', 'id');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'post_id');
+    }
 }

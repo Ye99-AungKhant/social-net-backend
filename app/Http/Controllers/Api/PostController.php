@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Friendship;
 use App\Models\Like;
 use App\Models\Media;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -72,12 +73,21 @@ class PostController extends Controller
             $like->post_id = $postId;
             $like->user_id = $authUserId;
             $like->save();
+
+            $noti = Notification::create([
+                'type' => 'Like',
+                'content' => 'reacted to your post',
+                'post_id' => $postId,
+                'user_id' => $authUserId,
+            ]);
+
             return response()->json([
                 'liked' => true,
                 'data' => $like
             ], 200);
         }
         $liked->delete();
+        Notification::where('post_id', $postId)->delete();
         return response()->json([
             'unliked' => true,
             'data' => ['auth_id' => $authUserId, 'post_id' => $postId]
