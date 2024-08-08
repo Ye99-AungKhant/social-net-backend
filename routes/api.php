@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FriendController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StoryController;
@@ -34,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('story', [StoryController::class, 'create']);
 
     Route::get('post', [PostController::class, 'index']);
+    Route::get('post/{id}', [PostController::class, 'post']);
     Route::post('post', [PostController::class, 'create']);
     Route::post('post/like', [PostController::class, 'like']);
 
@@ -54,4 +56,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('chat/{id}', [ChatController::class, 'index']);
     Route::post('chat', [ChatController::class, 'store']);
     Route::patch('chat/read', [ChatController::class, 'markAsRead']);
+
+    Route::get('notification', [NotificationController::class, 'getNoti']);
 });

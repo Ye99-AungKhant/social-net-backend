@@ -28,6 +28,15 @@ class PostController extends Controller
         return PostResource::collection($friendPosts)->additional(['success' => true]);
     }
 
+    public function post($id)
+    {
+        $post = Post::with('user', 'like', 'media')->withCount('like', 'comment')->where('id', $id)->first();
+        return response()->json([
+            'success' => true,
+            'data' => new PostResource($post)
+        ]);
+    }
+
     public function create(Request $request)
     {
         if ($request->image !== null) {
