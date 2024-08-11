@@ -58,4 +58,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('chat/read', [ChatController::class, 'markAsRead']);
 
     Route::get('notification', [NotificationController::class, 'getNoti']);
+    Route::patch('notification', [NotificationController::class, 'readNoti']);
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -20,11 +21,20 @@ class CommentController extends Controller
 
     public function create(Request $request)
     {
+        $authUserId = auth()->user()->id;
         $comment = new Comment();
         $comment->post_id = $request->postId;
         $comment->user_id = $request->userId;
         $comment->content = $request->content;
         $comment->save();
+
+        Notification::create([
+            'type' => 'Comment',
+            'content' => 'commented on your post',
+            'post_id' => $request->postId,
+            'user_id' => $authUserId,
+        ]);
+
         return response()->json([
             'success' => true,
             'data' => [new CommentResource($comment)]
