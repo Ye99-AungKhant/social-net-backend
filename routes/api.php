@@ -46,6 +46,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('profile/post/{id}', [ProfileController::class, 'getPost']);
     Route::get('profile/data/{id}', [ProfileController::class, 'profileData']);
+    Route::post('profile/aboutus', [ProfileController::class, 'createUserAbout']);
+    Route::delete('profile/aboutus/{id}', [ProfileController::class, 'deleteUserAbout']);
+    Route::patch('profile/bio', [ProfileController::class, 'addUserBio']);
+
     Route::get('friend/requested', [FriendController::class, 'index']);
     Route::get('friend/waiting', [FriendController::class, 'waitingFriend']);
     Route::get('friend/request/{id}', [FriendController::class, 'friendRequest']);
