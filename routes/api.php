@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('profile/aboutus', [ProfileController::class, 'createUserAbout']);
     Route::delete('profile/aboutus/{id}', [ProfileController::class, 'deleteUserAbout']);
     Route::patch('profile/bio', [ProfileController::class, 'addUserBio']);
+    Route::patch('profile/update', [ProfileController::class, 'updateUserProfile']);
 
     Route::get('friend/requested', [FriendController::class, 'index']);
     Route::get('friend/waiting', [FriendController::class, 'waitingFriend']);
@@ -63,4 +64,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('notification', [NotificationController::class, 'getNoti']);
     Route::patch('notification', [NotificationController::class, 'readNoti']);
+
+    Route::get('photos', [AppController::class, 'photos']);
+    Route::get('search', [AppController::class, 'search']);
 });

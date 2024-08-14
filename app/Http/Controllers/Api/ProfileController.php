@@ -77,4 +77,23 @@ class ProfileController extends Controller
             'success' => true,
         ], 200);
     }
+
+    public function updateUserProfile(Request $request)
+    {
+        $authUser = auth()->user();
+        $profile = $request->profile;
+        $name = $request->name;
+        $user = User::findOrFail($authUser->id);
+        if ($profile) {
+            $user->profile = $profile;
+        }
+        if ($name != $authUser->name) {
+            $user->name = $name;
+        }
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => new UserResource($user)
+        ], 200);
+    }
 }

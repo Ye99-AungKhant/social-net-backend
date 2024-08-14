@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('password');
             $table->string('profile');
+            $table->string('bio')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
