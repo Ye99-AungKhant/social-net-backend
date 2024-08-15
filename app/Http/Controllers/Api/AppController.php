@@ -13,6 +13,7 @@ use App\Models\Media;
 use App\Models\Notification;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,5 +60,13 @@ class AppController extends Controller
             'posts' => PostResource::collection($posts),
             'users' => UserResource::collection($users)
         ], 200);
+    }
+
+    public function updateLastOnline(Request $request)
+    {
+        return $request;
+        $userId = $request->userId;
+        $date = Carbon::now();
+        User::where('id', $userId)->update(['lastOnline', $date]);
     }
 }

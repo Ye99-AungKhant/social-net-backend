@@ -11,8 +11,12 @@ class NotificationController extends Controller
 {
     public function getNoti()
     {
-        $auth = auth()->user();
-        $noti = $auth->notificationsFromPosts();
+        $authId = auth()->user()->id;
+        $noti = Notification::whereIn('post_id', function ($query) use ($authId) {
+            $query->select('id')
+                ->from('posts')
+                ->where('user_id', $authId);
+        })->orderBy('id', 'DESC')->get();
 
         return response()->json([
             'success' => true,
@@ -23,6 +27,22 @@ class NotificationController extends Controller
     public function readNoti(Request $request)
     {
         $noti  = Notification::where('id', $request->notiId)->update(['read' => true]);
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function markAsReadAll(Request $request)
+    {
+        $notiData = $request->notiId;
+
+        foreach ($notiData as $data) {
+            $noti = Notification::find($data);
+            if ($noti) {
+                $noti->read = true;
+                $noti->save();
+            }
+        }
         return response()->json([
             'success' => true,
         ]);

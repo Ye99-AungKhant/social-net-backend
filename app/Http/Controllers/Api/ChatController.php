@@ -7,6 +7,7 @@ use App\Http\Resources\ChatResource;
 use App\Models\Chat;
 use App\Models\ChatMedia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -22,6 +23,20 @@ class ChatController extends Controller
         })->get();
 
         return ChatResource::collection($chat);
+    }
+
+    public function lastmessage()
+    {
+        $authId = 2;
+        $lastMessages = DB::table('chats as c1')
+            ->join(DB::raw('(SELECT MAX(id) as last_id FROM chats GROUP BY sender_id, receiver_id) as c2'), 'c1.id', '=', 'c2.last_id')
+            ->select('c1.*')
+            ->get();
+
+
+        return response()->json([
+            'data' => $lastMessages
+        ], 200);
     }
 
     public function store(Request $request)

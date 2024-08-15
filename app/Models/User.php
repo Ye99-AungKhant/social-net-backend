@@ -24,7 +24,8 @@ class User extends Authenticatable
         'phone',
         'password',
         'profile',
-        'bio'
+        'bio',
+        'lastOnline'
     ];
 
     /**
@@ -45,6 +46,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'lastOnline' => 'datetime',
     ];
 
     public function post(): HasMany
