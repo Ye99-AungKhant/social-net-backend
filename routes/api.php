@@ -36,8 +36,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('post', [PostController::class, 'index']);
     Route::get('post/{id}', [PostController::class, 'post']);
+    Route::patch('post', [PostController::class, 'updatePost']);
     Route::post('post', [PostController::class, 'create']);
     Route::post('post/like', [PostController::class, 'like']);
+    Route::patch('post/media/delete', [PostController::class, 'deleteMedia']);
 
     Route::post('comment', [CommentController::class, 'index']);
     Route::post('comment/create', [CommentController::class, 'create']);

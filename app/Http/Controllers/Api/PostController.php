@@ -72,6 +72,44 @@ class PostController extends Controller
         }
     }
 
+    public function updatePost(Request $request)
+    {
+        if ($request->image !== null) {
+            $post = Post::find($request->id);
+            $post->content = $request->content;
+            $post->save();
+
+            foreach ($request->image as $value) {
+                $media = new Media();
+                $media->post_id = $post->id;
+                $media->url = $value;
+                $media->type = 'Post';
+                $media->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => new PostResource($post)
+            ], 200);
+        } else {
+            $post = new Post();
+            $post->user_id = Auth::user()->id;
+            $post->content = $request->content;
+            $post->status = $request->status;
+            $post->save();
+
+            return response()->json([
+                'success' => true,
+                'data' => new PostResource($post)
+            ], 200);
+        }
+    }
+
+    public function deleteMedia(Request $request)
+    {
+        Media::where('url', $request->media)->delete();
+    }
+
     public function like(Request $request)
     {
         $authUserId = auth()->user()->id;
