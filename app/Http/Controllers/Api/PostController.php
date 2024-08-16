@@ -110,6 +110,12 @@ class PostController extends Controller
         Media::where('url', $request->media)->delete();
     }
 
+    public function postDelete($id)
+    {
+        Post::where('id', $id)->delete();
+        return response()->json(['success' => true], 200);
+    }
+
     public function like(Request $request)
     {
         $authUserId = auth()->user()->id;
