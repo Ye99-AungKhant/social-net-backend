@@ -44,6 +44,49 @@ class UserController extends Controller
                         'data' => ['access_token' => $response_token, 'user_data' => new UserResource($user)]
                     ], 200);
                 }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your email or password do not match. Please try again.'
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 200);
+        }
+    }
+
+    public function handleGoogleCallback(Request $request)
+    {
+        $userCheck = User::where('email', $request->email)->first();
+
+        try {
+            if ($userCheck) {
+                $user = $userCheck;
+                if ($user instanceof \App\Models\User) {
+                    $token = $user->createToken('socialnet88');
+                    $response_token = $token->plainTextToken;
+
+                    return response()->json([
+                        'success' => true,
+                        'data' => ['access_token' => $response_token, 'user_data' => new UserResource($user)]
+                    ], 200);
+                }
+            } else {
+
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make(str()->random()),
+                ]);
+                $token = $user->createToken('socialnet88');
+                $response_token = $token->plainTextToken;
+                return response()->json([
+                    'success' => true,
+                    'data' => ['access_token' => $response_token, 'user_data' => new UserResource($user)]
+                ], 200);
             }
         } catch (\Exception $e) {
             return response()->json([
