@@ -27,16 +27,26 @@ class ChatController extends Controller
 
     public function lastmessage()
     {
-        $authId = 2;
+        $authId = auth()->user()->id;
+        // $lastMessages = DB::table('chats as c1')
+        //     ->join(DB::raw('(SELECT MAX(id) as last_id FROM chats GROUP BY sender_id, receiver_id) as c2'), 'c1.id', '=', 'c2.last_id')
+        //     ->select('c1.*')
+        //     ->get();
         $lastMessages = DB::table('chats as c1')
-            ->join(DB::raw('(SELECT MAX(id) as last_id FROM chats GROUP BY sender_id, receiver_id) as c2'), 'c1.id', '=', 'c2.last_id')
+            ->join(
+                DB::raw('(SELECT MAX(id) as last_id FROM chats WHERE sender_id = ? OR receiver_id = ? GROUP BY LEAST(sender_id, receiver_id), GREATEST(sender_id, receiver_id)) as c2'),
+                'c1.id',
+                '=',
+                'c2.last_id'
+            )
             ->select('c1.*')
+            ->setBindings([$authId, $authId])
             ->get();
 
 
         return response()->json([
             'data' => $lastMessages
-        ], 200);
+        ]);
     }
 
     public function store(Request $request)

@@ -23,9 +23,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::post('signup', [UserController::class, 'signup']);
 Route::post('signin', [UserController::class, 'signin']);
 Route::post('signin/google', [UserController::class, 'handleGoogleCallback']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [UserController::class, 'logout']);
 
@@ -65,7 +67,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('chat/{id}', [ChatController::class, 'index']);
     Route::post('chat', [ChatController::class, 'store']);
     Route::patch('chat/read', [ChatController::class, 'markAsRead']);
-    Route::get('chat/lastmessage', [ChatController::class, 'lastMessage']);
+    Route::get('last/chat', [ChatController::class, 'lastmessage']);
 
     Route::get('notification', [NotificationController::class, 'getNoti']);
     Route::patch('notification', [NotificationController::class, 'readNoti']);
