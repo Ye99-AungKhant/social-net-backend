@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('stories', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
+            $table->string('content')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->enum('status', ['Public', 'Friend']);
-            $table->string('url');
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }

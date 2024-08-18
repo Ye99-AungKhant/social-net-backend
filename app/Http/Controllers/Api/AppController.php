@@ -16,6 +16,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AppController extends Controller
 {
@@ -30,11 +31,32 @@ class AppController extends Controller
         $chatNoti = Chat::where('receiver_id', $auth->id)->where('read', false)->get();
         $noti = $auth->notificationsFromPosts();
 
+        $messageUsers = DB::table('chats')
+            ->where('sender_id', $auth->id)
+            ->orWhere('receiver_id', $auth->id)
+            ->where(function ($query) use ($auth) {
+                $query->where('sender_id', '!=', $auth->id)
+                    ->orWhere('receiver_id', '!=', $auth->id);
+            })
+            ->select('sender_id', 'receiver_id')
+            ->get();
+
+        // Extract unique user IDs, excluding the authenticated user
+        $userIds = $messageUsers->map(function ($chat) use ($auth) {
+            return $chat->sender_id == $auth->id ? $chat->receiver_id : $chat->sender_id;
+        })->unique();
+
+        $chatUsers = User::whereIn('id', $userIds)->get();
+
+        // Combine both friend list and chat users, ensuring no duplicates
+        $chatUser = $friendLists->merge($chatUsers)->unique('id');
+
         return response()->json([
             'success' => true,
             'auth' => $auth,
             'friendRequestNoti' => $friendRequestNoti,
             'friendList' => UserResource::collection($friendLists),
+            'chatUserList' => UserResource::collection($chatUser),
             'chatNoti' => $chatNoti,
             'notification' => NotificationResource::collection($noti)
         ]);

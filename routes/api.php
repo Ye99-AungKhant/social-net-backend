@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('chat', [ChatController::class, 'store']);
     Route::patch('chat/read', [ChatController::class, 'markAsRead']);
     Route::get('last/chat', [ChatController::class, 'lastmessage']);
+    Route::get('search/chat', [ChatController::class, 'search']);
 
     Route::get('notification', [NotificationController::class, 'getNoti']);
     Route::patch('notification', [NotificationController::class, 'readNoti']);

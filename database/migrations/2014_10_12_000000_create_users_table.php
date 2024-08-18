@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->nullable();
             $table->string('password');
-            $table->string('profile');
+            $table->string('profile')->nullable();
             $table->string('bio')->nullable();
-            $table->timestamps('lastOnline');
+            $table->dateTime('lastOnline')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

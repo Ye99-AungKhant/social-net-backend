@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\UserResource;
 use App\Models\Chat;
 use App\Models\ChatMedia;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -87,5 +89,15 @@ class ChatController extends Controller
         $authId = auth()->user()->id;
         $chat = Chat::where('sender_id', $request->senderId)->where('receiver_id', $authId)->update(['read' => true]);
         return response()->json(['status' => 'success', 'data' => $chat]);
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        $users = User::where('name', 'LIKE', "%{$searchTerm}%")->get();
+
+        return response()->json([
+            'users' => UserResource::collection($users)
+        ], 200);
     }
 }
